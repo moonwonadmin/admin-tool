@@ -1,0 +1,270 @@
+extends ../layout
+
+block content
+  div.header
+    h1 즐겨찾기
+  div.search-box
+    input(type="text" name="search" data-shopid=shopId placeholder="제품번호만 입력")
+    button.btn.btn-primary.btn-sm#search 검색
+
+  div.contents-body
+    ul.contents-list
+      -var index = 0;
+      each item in payload
+        - index++
+        - var salePrice = item.salePrice;
+        - var ikeaPrice = item.ikeaPrice ? item.ikeaPrice : 0;
+        - var sellerImmediateDiscountAmount = item.sellerImmediateDiscountAmount || 0;
+        - var discountPrice = salePrice - (sellerImmediateDiscountAmount);
+        - var productMargin = Math.round(discountPrice * 0.9426 + item.baseDeliveryFee * 0.9626) - (ikeaPrice + item.realDeliveryFee);
+        - var rowClassName = 'row-' + item.id;
+        - var isPriceAlert = false;
+        - var isPriceline = item.isPriceline;
+        - var alertBG = 'cell w5'
+        if (+discountPrice === +maxPrice || +discountPrice === +minPrice || Math.abs(maxPrice - discountPrice) < 50 || Math.abs(discountPrice - minPrice) < 50)
+          - isPriceAlert = true;
+
+        if (isPriceline)
+          - alertBG = 'cell w5 alert-bg-puple';
+        else if (isPriceAlert)
+          - alertBG = 'cell w5 alert-bg';
+
+        li(class=rowClassName)
+          div(class=alertBG)
+            span.no #{index}
+            br
+            small(style="font-size: 10px;") P: [#{item.page}]
+            br
+            small(style="font-size: 10px;") G: [#{item.group}]
+          div.cell.w10
+            div.btn-area
+              label 수정
+                input(type='checkbox' class="autoBtn" data-id=item.id name='isAuto-' + item.id checked=item.isAuto)
+              label 즐겨찾기
+                input(type='checkbox' class="favoriteBtn" data-id=item.id name='isFavorite-' + item.id checked=item.isFavorite)
+              label
+              if item.isMobile
+                span.box-mobile 모바일
+              else if item.isTarget
+                span.box-target 타게팅
+              else
+                span.box-normal 일반
+          div.cell.w15
+            a(href='/normal/' + shopId + '/detail/' + item.storefarmChannelProductNo + '?origin=normal')
+              span #{item.storefarmChannelProductNo}
+            br
+            span.light [#{item.id}]
+              if item.isOut
+                br
+                span.alert-commnet 원부없음
+            br
+            br
+            if item.isMobile
+              label
+                button.btn.btn-info.btn-sm.toggle-target(type='button' data-id=item.id) 모바일->타겟
+              label
+                button.btn.btn-info.btn-sm.toggle-normal(type='button' data-id=item.id) 모바일->일반
+            else if item.isTarget
+              label
+                button.btn.btn-info.btn-sm.toggle-normal(type='button' data-id=item.id) 타겟->일반
+              label
+                button.btn.btn-info.btn-sm.toggle-mobile(type='button' data-id=item.id) 타겟->모바일
+            else
+              label
+                button.btn.btn-info.btn-sm.toggle-target(type='button' data-id=item.id) 일반->타겟
+              label
+                button.btn.btn-info.btn-sm.toggle-mobile(type='button' data-id=item.id) 일반->모바일
+
+          div.cell.w30
+            if item.parsingUrl
+              a(href=item.parsingUrl target="_blank") #{item.productName}
+            else
+              span #{item.productName}
+          div.cell.w10
+            span #{discountPrice.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+            br
+            span(class=productMargin > 0 ? 'margin plus' : 'margin minus')
+              span #{productMargin.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+
+          - var maxPrice = item.max ? item.max : 0;
+          - var minPrice = item.min ? item.min : 0;
+
+          div.cell.w10.input-area
+            label.small 大:
+            span.editable(data-id=item.id) #{item.max.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+            input(type="text" value=item.max name='max-' + item.id)
+            br
+            label.small 小:
+            span.editable(data-id=item.id) #{item.min.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+            input(type="text" value=item.min name='min-' + item.id)
+            br
+            br
+            label.small @:
+            span.editable(data-id=item.id) #{item.targetPrice.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+            input(type="text" value=item.targetPrice name='targetPrice-' + item.id)
+          div.cell.w15.input-area
+            label 이케아가격:
+            span.editable(data-id=item.id) #{item.ikeaPrice.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+            input(type="text" value=item.ikeaPrice name='ikeaPrice-' + item.id)
+            br
+            label 할인가격:
+            span #{sellerImmediateDiscountAmount}
+            br
+            label 배송비:
+            span #{item.baseDeliveryFee ? item.baseDeliveryFee.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : 0}
+            br
+            label 실배송비:
+            span.editable(data-id=item.id) #{item.realDeliveryFee.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+            input(type="text" value=item.realDeliveryFee name='realDeliveryFee-' + item.id)
+          div.cell.w5
+            button.btn.btn-primary.btn-sm.submit(type='button' data-id=item.id) 저장
+            //- label
+            //-   button.btn.btn-danger.btn-sm.delete(type='button' data-id=item.id) 삭제
+          div.inner-row
+            - var modifiedDate = moment(item.modifiedDate).add(9, 'hours');
+            span #{modifiedDate ? modifiedDate.format('YYYY-MM-DD HH:mm') : ''}
+            span  | 수량: #{item.stockQuantity} | code: #{item.sellerManagementCode}
+
+block script
+  script.
+    $('#search').on('click', function () {
+      const name = $('input[name="search"]').val();
+      const shopId = $('input[name="search"]').data('shopid');
+
+      if (name) {
+        location.href = '/normal/' + shopId + '/detail/' + name + '?origin=favorite';
+      }
+    })
+    $('.top').on('click', function () {
+      $('html,body').scrollTop(0);
+    });
+
+    $('span.editable').on('click', function (event) {
+      var target = $(event.target);
+      var id = target.data('id');
+      $('.row-' + id).find('input[type=text]').show();
+    });
+    $('.autoBtn, .favoriteBtn, .sameBtn').on('change', function (event) {
+      var target = $(event.target);
+      var id = target.data('id');
+
+      var modifiedForm = {
+        isAuto: $('input[name=isAuto-' + id + ']').is(':checked'),
+        isFavorite: $('input[name=isFavorite-' + id + ']').is(':checked')
+      }
+
+      $.ajax({
+        method: 'PUT',
+        url: '/product/' + id,
+        data: modifiedForm
+      })
+      .done(function (result) {
+        alert(result.message);
+      })
+      .fail(function (error) {
+        alert(error.message);
+      });
+    });
+
+    $('.submit').on('click', function (event) {
+      var target = $(event.target);
+      var id = target.data('id');
+
+      var modifiedForm = {
+        // salePrice: $('input[name=salePrice-' + id + ']').val(),
+        // sellerImmediateDiscountAmount: $('input[name=sellerImmediateDiscountAmount-' + id + ']').val(),
+        isAuto: $('input[name=isAuto-' + id + ']').is(':checked'),
+        isFavorite: $('input[name=isFavorite-' + id + ']').is(':checked'),
+        min: +$('input[name=min-' + id + ']').val(),
+        max: +$('input[name=max-' + id + ']').val(),
+        ikeaPrice: +$('input[name=ikeaPrice-' + id + ']').val(),
+        realDeliveryFee: +$('input[name=realDeliveryFee-' + id + ']').val(),
+        targetPrice: +$('input[name=targetPrice-' + id + ']').val()
+      }
+      $.ajax({
+        method: 'PUT',
+        url: '/product/' + id,
+        data: modifiedForm
+      })
+      .done((result) => {
+        console.log(result)
+        alert(result.message)
+        window.location.href = '/normal/#' + id;
+        window.location.reload();
+      })
+      .fail((error) => {
+        alert(error.message)
+      });
+    });
+
+    $('.toggle-target').on('click', function (event) {
+      var target = $(event.target);
+      var id = target.data('id');
+
+      if (confirm(id + '를 타게팅 합니까?')) {
+        $.ajax({
+          method: 'PUT',
+          url: '/product/' + id + '/toggle',
+          data: {
+            isTarget: true,
+            isMobile: false,
+            isNormal: false
+          }
+        })
+        .done((result) => {
+          // $('.row-' +id).remove();
+          alert(result.message)
+        })
+        .fail((error) => {
+          alert(error.message)
+        });
+      }
+    });
+
+    $('.toggle-mobile').on('click', function (event) {
+      var target = $(event.target);
+      var id = target.data('id');
+
+      if (confirm(id + '를 모바일 타게팅 합니까?')) {
+        $.ajax({
+          method: 'PUT',
+          url: '/product/' + id + '/toggle',
+          data: {
+            isMobile: true,
+            isNormal: false,
+            isTarget: false
+          }
+        })
+        .done((result) => {
+          // $('.row-' +id).remove();
+          alert(result.message)
+        })
+        .fail((error) => {
+          alert(error.message)
+        });
+      }
+    });
+    $('.toggle-normal').on('click', function (event) {
+      var target = $(event.target);
+      var id = target.data('id');
+
+      if (confirm(id + '를 일반관리 합니까?')) {
+        $.ajax({
+          method: 'PUT',
+          url: '/product/' + id + '/toggle',
+          data: {
+            isNormal: true,
+            isTarget: false,
+            isMobile: false,
+          }
+        })
+        .done(function (result) {
+          // $('.row-' + id).remove();
+          alert(result.message)
+        })
+        .fail(function (error) {
+          alert(error.message)
+        });
+      }
+    });
+

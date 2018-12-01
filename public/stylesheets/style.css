@@ -1,0 +1,357 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+body {
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	color: #1e1e1e;
+}
+/* navigation */
+.navigation{
+  width: 120px;
+  height: 100%;
+  position: fixed;
+  border-right: 1px solid #ddd;
+}
+.navigation li.title{
+  font-weight: bold;
+  padding: 10px 0 10px 10px;
+  font-size: 18px;
+}
+.navigation li{
+  text-align: left;
+  padding: 0 0 0 5px;
+}
+.moonwon-link{
+  color: #424242;
+}
+.karibu-link{
+  color: #fcb31d;
+}
+
+/* contents */
+.contents{
+  padding: 0 10px 30px 130px;
+}
+.contents .header{
+  width: 100%;
+  padding: 20px;
+  border-bottom: 2px solid #ddd;
+}
+.contents .header h1{
+	font-weight: bold;
+	font-size: 18px;
+}
+.contents-body {
+	position: relative;
+}
+.contents-list {
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.contents-list li {
+	border-bottom: 4px solid #ddd;
+	padding: 5px 0;
+}
+.cell{
+	vertical-align: middle;
+	text-align: center;
+	display: inline-block;
+}
+.cell input[type=text]{
+	width: 90px;
+	padding: 5px;
+}
+.cell input[type=text]{
+	width: 90%;
+	padding: 2%;
+	display: none;
+}
+.cell input[type=text]{
+	width: 90%;
+	padding: 2%;
+	display: none;
+}
+.cell input[type=text]{
+	width: 90%;
+	padding: 2%;
+	display: none;
+}
+.w5 {
+	width: 5%;
+}
+.w10 {
+	width: 10%;
+}
+.w15 {
+	width: 15%;
+}
+.w30 {
+	width: 30%;
+}
+.inner-row {
+	padding: 10px;
+	text-align: center;
+	border-top: 1px solid #e8e8e8;
+	margin-top: 5px;
+}
+.no {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+}
+
+/* table.contents-list{
+	width: 100%;
+	border: 1px solid #dcdcdc;
+}
+.contents-list th{
+	font-size: 16px;
+	padding: 10px 0;
+	border: 1px solid #dcdcdc;
+	border-bottom: 2px solid #dcdcdc;
+	vertical-align: middle;
+}
+.contents-list td{
+	padding: 5px;
+	border: 1px solid #dcdcdc;
+	vertical-align: middle;
+	text-align: center;
+}
+.contents-list td input[type=text]{
+	width: 90px;
+	padding: 5px;
+}
+.contents-list.normal td input[type=text]{
+	width: 90%;
+	padding: 2%;
+	display: none;
+}
+.contents-list.target td input[type=text]{
+	width: 90%;
+	padding: 2%;
+	display: none;
+}
+.contents-list.favorite td input[type=text]{
+	width: 90%;
+	padding: 2%;
+	display: none;
+}
+.even{
+	background-color: #f1f1f1;
+}
+.even tr{
+	border-bottom: 2px solid #f1f1f1;
+	border-top: 2px solid #f1f1f1;
+}
+.title{
+	text-align: center;
+	font-weight: bold;
+}
+ */
+ 
+.btn-area{
+	text-align: center;
+}
+.btn-area label{
+	display: block;
+	padding: 8px 0;
+}
+.btn-area label input{
+	margin: 0 0 0 5px;
+}
+.cookie{
+	margin-bottom: 10px;
+}
+.cookie h2{
+  font-size: 18px;
+  font-weight: bold;
+}
+.cookie textarea{
+	width: 100%;
+	height: 100px;
+}
+.cookie button {
+	margin: 5px 5px 5px 0;
+}
+.cookie .gap{
+  padding: 20px;
+}
+
+.product-form{
+	width: 90%;
+}
+
+.product-form label{
+	display: inline-block;
+	width: 15%;
+	text-align: right;
+	font-weight: bold;
+	border-right: 1px solid #ddd;
+	padding: 10px 2%;
+	margin: 5px 2% 5px 0;
+}
+.product-form input{
+	width: 70%;
+	padding: 10px 2%;
+	margin: 5px 0;
+}
+.product-form input[readonly]{
+	border: 0;
+}
+.alert-commnet{
+	font-weight: bold;
+	color: #ff0033;
+}
+
+.fix-panner{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	text-align: center;
+}
+.fix-panner button {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	font-size: 14px; 
+	outline: 0;
+	background-color: #1dc1ad;
+	border: 1px solid #08a995;
+
+	/* -webkit-box-shadow: 0px -3px 7px 3px rgba(0,0,0,0.51);
+	-moz-box-shadow: 0px -3px 7px 3px rgba(0,0,0,0.51);
+	box-shadow: 0px -3px 7px 3px rgba(0,0,0,0.51); */
+}
+.fix-panner a {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	outline: 0;
+	background-color: #1dc1ad;
+	border: 1px solid #08a995;
+	vertical-align: middle;
+	font-size: 18px; 
+	line-height: 50px;
+	text-decoration: none;
+	color: #fff;
+}
+
+.alert-bg{
+	background-color: rgba(255, 0, 0, 0.3) !important;
+}
+.alert-bg-puple{
+	background-color: rgba(28, 0, 108, 0.3) !important;
+}
+td.tl{
+	text-align: left;
+}
+span.light{
+	font-weight: lighter;
+	color: #b3b3b3;
+}
+span.margin{
+	margin: 5px 0 0 0;
+	padding: 5px 0 0 0;
+	display: block;
+	color: #1e1e1e;
+}
+span.plus{
+	color: #1dc1ad;
+}
+span.minus{
+	color: #c11d4f;
+}
+.input-area {
+	text-align: left;
+}
+.input-area span{
+	display: inline-block;
+}
+span.editable{
+	cursor: pointer;
+}
+span.editable:hover{
+	outline: 1px solid #ddd;
+}
+.input-area label.small{
+	width: 20px;
+}
+.box-target{
+	display: block;
+	padding: 5px;
+	background-color: #f3457a;
+	font-weight: bold;
+	color: #fff;
+}
+.box-normal{
+	display: block;
+	padding: 5px;
+	background-color: #45abf3;
+	font-weight: bold;
+	color: #fff;
+}
+.box-mobile {
+	display: block;
+	padding: 5px;
+	background-color: #21d067;
+	font-weight: bold;
+	color: #fff;
+}
+.excel-area{
+	padding: 10px 0;
+}
+.search-box{
+	padding: 20px 0;
+	border-top: 2px solid #ddd;
+	border-bottom: 2px solid #ddd;
+}
+.search-box input{
+	padding: 5px 0;
+}
+.search-box button{
+	vertical-align: top;
+}

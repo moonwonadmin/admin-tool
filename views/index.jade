@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  div.header
+    h1 홈
+  div.body
+    div.cookie
+      h2 Moonwon
+      p 스토어팜 > F12 > console > document.cookie
+      if moonwon
+        textarea(id="cookie-465183") #{moonwon.cookie}
+      else
+        textarea(id="cookie-465183")
+      button.btn.btn-primary.save(data-id="465183") 쿠키저장
+      div.gap
+      h2 Karibu
+      p 스토어팜 > F12 > console > document.cookie
+      if moonwon
+        textarea(id="cookie-650090") #{karibu.cookie}
+      else
+        textarea(id="cookie-650090")
+      button.btn.btn-primary.save(data-id="650090") 쿠키저장
+
+    //- iframe(id="storeFarm" src="https://sell.storefarm.naver.com/#/home/dashboard", frameborder="0", width="100%", height="800px;")
+
+block script
+  script.
+    $('.save').on('click', function(e) {
+      const target = $(e.target);
+      const shopid = target.attr('data-id');
+      const cookie = $(`#cookie-${shopid}`).val();
+
+      $.ajax({
+        method: 'PUT',
+        url: `/cookie/${shopid}`,
+        data: {
+          cookie: cookie
+        }
+      })
+      .done(function() {
+        alert('저장되었습니다.')
+      })
+      .fail(function() {
+
+      })
+    })

@@ -1,0 +1,167 @@
+extends ../layout
+
+block content
+  div.header
+    if payload
+      h1 #{payload.productName}
+    else
+      h1 제품없음
+  div.body
+    if payload
+      form.product-form
+        label 제품이름
+        input(type="text" value=payload.productName readonly)
+        input(type="hidden" id="id" value=payload.id)
+
+
+        label(style="color:green;") 제품가격
+        input(type="text" value=payload.salePrice.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") readonly)
+
+        label(style="color:green;") 배송비
+        input(type="text" value=payload.baseDeliveryFee.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") readonly)
+
+        - var ikeaPrice = payload.ikeaPrice ? payload.ikeaPrice : 0;
+        - var productMargin = Math.round(payload.salePrice * 0.9426 + payload.baseDeliveryFee * 0.9626) - (ikeaPrice + payload.realDeliveryFee)
+
+        label(style="color:red;") 이케아가격
+        input(type="text" name="ikeaPrice" value=ikeaPrice.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") readonly)
+
+        label(style="color:red;") 실배송비
+        input(type="text" name="realDeliveryFee" value=payload.realDeliveryFee)
+
+        label 마진
+        input(type="text" value=productMargin.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") readonly)
+
+        label 최소가격
+        input(type="text" name="min" value=payload.min)
+
+        label 최대가격
+        input(type="text" name="max" value=payload.max)
+
+        label 원부주소
+        input(type="text" name="parsingUrl" value=payload.parsingUrl)
+
+        label 수정타입
+        if payload.isNormal
+          div(style="display:inline-block; width: 70%;")
+            button.btn.btn-info.btn-sm.toggle(type='button' data-id=payload.id data-type='target') 타게팅
+        if payload.isTarget
+          div(style="display:inline-block; width: 70%;")
+            button.btn.btn-info.btn-sm.toggle(type='button' data-id=payload.id data-type='normal') 일반
+
+        label 수정
+        input(type='checkbox' class="autoBtn" data-id=payload.id name='isAuto-' + payload.id checked=payload.isAuto)
+
+        label 즐겨찾기
+        input(type='checkbox' class="favoriteBtn" data-id=payload.id name='isFavorite-' + payload.id checked=payload.isFavorite)
+
+        label  타케팅 주소
+        div
+          label 01.
+          input(type="text" class="targetUrl" name="targetUrl01" value=payload.targetUrl[0] || '')
+          label 02.
+          input(type="text" class="targetUrl" name="targetUrl02" value=payload.targetUrl[1] || '')
+          label 03.
+          input(type="text" class="targetUrl" name="targetUrl03" value=payload.targetUrl[2] || '')
+          label 04.
+          input(type="text" class="targetUrl" name="targetUrl04" value=payload.targetUrl[3] || '')
+          label 05.
+          input(type="text" class="targetUrl" name="targetUrl05" value=payload.targetUrl[4] || '')
+
+
+        div.btn-area
+          button.btn.btn-info#save 저장
+    else
+      div NONE
+  input(type="hidden" id="shopId" value=shopId)
+  input(type="hidden" name="origin" value=origin)
+block script
+  script.
+    $('#save').on('click', function(e) {
+      e.preventDefault();
+      var shopId = $('#shopId').val();
+      var id = $('#id').val();
+      var targetUrlArr = [];
+      var requestForm = {
+        parsingUrl: $('input[name=parsingUrl]').val(),
+        min: $('input[name=min]').val(),
+        max: $('input[name=max]').val(),
+        realDeliveryFee: +$('input[name=realDeliveryFee]').val(),
+      };
+
+      targetUrlArr.push($('input[name=targetUrl01]').val());
+      targetUrlArr.push($('input[name=targetUrl02]').val());
+      targetUrlArr.push($('input[name=targetUrl03]').val());
+      targetUrlArr.push($('input[name=targetUrl04]').val());
+      targetUrlArr.push($('input[name=targetUrl05]').val());
+
+      requestForm['targetUrl'] = targetUrlArr;
+      $.ajax({
+        method: 'PUT',
+        url: '/normal/' + shopId + '/detail/' + id + '/url',
+        data: requestForm
+      })
+      .done((result)=> {
+        alert(result.message)
+        var origin = $('input[name=origin]').val() || 'normal';
+        var id = $('#id').val();
+
+        window.location.href = '/'+ origin +'/' + shopId + '/#' + id;
+      })
+      .fail((error) => {
+        alert(error.message)
+      });
+    });
+    $('.autoBtn, .favoriteBtn, .sameBtn').on('change', function (event) {
+      var target = $(event.target);
+      var id = target.data('id');
+
+      var modifiedForm = {
+        isAuto: $('input[name=isAuto-' + id + ']').is(':checked'),
+        isFavorite: $('input[name=isFavorite-' + id + ']').is(':checked'),
+        isSame: $('input[name=isSame-' + id + ']').is(':checked')
+      }
+      $.ajax({
+        method: 'PUT',
+        url: '/product/' + id,
+        data: modifiedForm
+      })
+      .done(function (result) {
+        alert(result.message);
+      })
+      .fail(function (error) {
+        alert(error.message);
+      });
+    });
+    $('.toggle').on('click', function (event) {
+      var target = $(event.target);
+      var id = target.data('id');
+      var type = target.data('type');
+
+      var _data = null;
+
+      if (type === 'target') {
+        _data = {
+          isNormal: false,
+          isTarget: true
+        };
+      } else {
+        _data = {
+          isNormal: true,
+          isTarget: false
+        };
+      }
+
+      $.ajax({
+        method: 'PUT',
+        url: '/product/' + id + '/toggle',
+        data: _data
+      })
+      .done(function (result) {
+        $('.row-' + id).remove();
+        location.reload();
+      })
+      .fail(function (error) {
+        alert(error.message)
+      });
+    });
