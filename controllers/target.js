@@ -1,5 +1,5 @@
 const ProductSchema = require('../models/product');
-const BG_COLOR = require('../config').BG_COLOR;
+const SHOP_NAME = require('../config').SHOP_NAME;
 
 const getProducts = function(req, res, next) {
   const { shopId } = req.params;
@@ -13,7 +13,7 @@ const getProducts = function(req, res, next) {
     res.render('target/index', {
       payload: data,
       shopId,
-      bg: BG_COLOR[shopId]
+      shopName: SHOP_NAME[shopId],
     });
   });
 };
