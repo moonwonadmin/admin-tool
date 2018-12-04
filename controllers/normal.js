@@ -3,7 +3,7 @@ const ProductSchema = require('../models/product');
 const ProductController = require('./product');
 const messages = require('../config/message');
 const moment = require('moment');
-const BG_COLOR = require('../config').BG_COLOR;
+const SHOP_NAME = require('../config').SHOP_NAME;
 
 const getProducts = function(req, res, next) {
   const { shopId } = req.params;
@@ -30,7 +30,7 @@ const getProducts = function(req, res, next) {
     res.render('normal/index', {
       payload: data,
       shopId,
-      bg: BG_COLOR[shopId],
+      shopName: SHOP_NAME[shopId],
     });
   });
 };

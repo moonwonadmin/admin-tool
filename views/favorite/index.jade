@@ -8,6 +8,8 @@ block content
     button.btn.btn-primary.btn-sm#search 검색
 
   div.contents-body
+    div.fix-panner
+      button.top #{shopName}
     ul.contents-list
       -var index = 0;
       each item in payload
@@ -17,20 +19,20 @@ block content
         - var sellerImmediateDiscountAmount = item.sellerImmediateDiscountAmount || 0;
         - var discountPrice = salePrice - (sellerImmediateDiscountAmount);
         - var productMargin = Math.round(discountPrice * 0.9426 + item.baseDeliveryFee * 0.9626) - (ikeaPrice + item.realDeliveryFee);
-        - var rowClassName = 'row-' + item.id;
+        - var rowClassName = 'row-' + item.id  + (index % 2 === 0 ? ' even' : ' odd');
         - var isPriceAlert = false;
         - var isPriceline = item.isPriceline;
-        - var alertBG = 'cell w5'
+        - var alertBG = ''
         if (+discountPrice === +maxPrice || +discountPrice === +minPrice || Math.abs(maxPrice - discountPrice) < 50 || Math.abs(discountPrice - minPrice) < 50)
           - isPriceAlert = true;
 
         if (isPriceline)
-          - alertBG = 'cell w5 alert-bg-puple';
+          - alertBG = 'alert-bg-puple';
         else if (isPriceAlert)
-          - alertBG = 'cell w5 alert-bg';
+          - alertBG = 'alert-bg';
 
         li(class=rowClassName)
-          div(class=alertBG)
+          div.cell.w5
             span.no #{index}
             br
             small(style="font-size: 10px;") P: [#{item.page}]
@@ -50,7 +52,7 @@ block content
               else
                 span.box-normal 일반
           div.cell.w15
-            a(href='/normal/' + shopId + '/detail/' + item.storefarmChannelProductNo + '?origin=normal')
+            a(href='/normal/' + shopId + '/detail/' + item.storefarmChannelProductNo + '?origin=favorite')
               span #{item.storefarmChannelProductNo}
             br
             span.light [#{item.id}]
@@ -89,7 +91,7 @@ block content
           - var maxPrice = item.max ? item.max : 0;
           - var minPrice = item.min ? item.min : 0;
 
-          div.cell.w10.input-area
+          div.cell.w10.input-area(class=alertBG)
             label.small 大:
             span.editable(data-id=item.id) #{item.max.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
             input(type="text" value=item.max name='max-' + item.id)
@@ -193,7 +195,7 @@ block script
         window.location.reload();
       })
       .fail((error) => {
-        alert(error.message)
+        alert(error.responseJSON.message)
       });
     });
 

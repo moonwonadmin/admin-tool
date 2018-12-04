@@ -29,7 +29,7 @@ const updateById = function(req, res, next) {
     { id: id},
     newData
   ).exec((err, data) => {
-    if (err) res.status(500).send({message: messages.fails});
+    if (err) return res.status(500).json({message: messages.fails});
 
     res.status(200).send({
       message: messages.success
@@ -62,7 +62,7 @@ const statusToggleById = function(req, res, next) {
     { id: id},
     newData
   ).exec((err, data) => {
-    if (err) res.status(500).send({message: messages.fails});
+    if (err) return res.status(500).send({message: messages.fails});
 
     res.status(200).send({
       message: messages.success

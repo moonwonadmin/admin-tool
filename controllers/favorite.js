@@ -1,6 +1,6 @@
 const Promise = require('bluebird');
 const ProductSchema = require('../models/product');
-const BG_COLOR = require('../config').BG_COLOR;
+const SHOP_NAME = require('../config').SHOP_NAME;
 
 const getFavoriteProduct = function(req, res, next) {
   const { shopId } = req.params;
@@ -14,7 +14,7 @@ const getFavoriteProduct = function(req, res, next) {
       res.render('favorite/index', {
         payload: data,
         shopId,
-        bg: BG_COLOR[shopId]
+        shopName: SHOP_NAME[shopId],
       });
     });
 };

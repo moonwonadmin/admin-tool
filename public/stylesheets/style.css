@@ -94,6 +94,9 @@ body {
 	border-bottom: 4px solid #ddd;
 	padding: 5px 0;
 }
+.contents-list li.even {
+  background-color: #f2f2f2;
+}
 .cell{
 	vertical-align: middle;
 	text-align: center;
@@ -248,19 +251,19 @@ body {
 
 .fix-panner{
 	position: fixed;
-	bottom: 0;
+	top: 0;
 	left: 0;
 	width: 100%;
 	text-align: center;
+  z-index: 99999;
 }
 .fix-panner button {
 	display: inline-block;
-	width: 50px;
+	width: 200px;
 	height: 50px;
 	font-size: 14px; 
 	outline: 0;
-	background-color: #1dc1ad;
-	border: 1px solid #08a995;
+	background-color: #31c8e0;
 
 	/* -webkit-box-shadow: 0px -3px 7px 3px rgba(0,0,0,0.51);
 	-moz-box-shadow: 0px -3px 7px 3px rgba(0,0,0,0.51);
