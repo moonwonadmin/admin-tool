@@ -259,8 +259,9 @@ body {
 }
 .fix-panner button {
 	display: inline-block;
-	width: 200px;
-	height: 50px;
+	width: 180px;
+	height: 30px;
+  font-weight: bold;
 	font-size: 14px; 
 	outline: 0;
 	background-color: #31c8e0;

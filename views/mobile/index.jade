@@ -28,15 +28,18 @@ block content
         - var isPriceAlert = false;
         - var isPriceline = item.isPriceline;
         - var alertBG = ''
+        - var maxPrice = item.max ? item.max : 0;
+        - var minPrice = item.min ? item.min : 0;
         if (+discountPrice === +maxPrice || +discountPrice === +minPrice || Math.abs(maxPrice - discountPrice) < 50 || Math.abs(discountPrice - minPrice) < 50)
           - isPriceAlert = true;
 
+        if (isPriceAlert)
+          - alertBG = 'alert-bg';
         if (isPriceline)
           - alertBG = 'alert-bg-puple';
-        else if (isPriceAlert)
-          - alertBG = 'alert-bg';
 
-        li(class=rowClassName)
+
+        li(class=rowClassName id=item.id)
           div.cell.w5
             span.no #{index}
             br
@@ -73,9 +76,6 @@ block content
             br
             span(class=productMargin > 0 ? 'margin plus' : 'margin minus')
               span #{productMargin.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
-
-          - var maxPrice = item.max ? item.max : 0;
-          - var minPrice = item.min ? item.min : 0;
 
           div.cell.w10.input-area(class=alertBG)
             label.small 大:
